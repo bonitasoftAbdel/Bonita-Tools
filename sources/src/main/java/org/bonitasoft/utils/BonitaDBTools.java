@@ -77,8 +77,9 @@ public class BonitaDBTools {
 	 *         :row2column1value,column2name:row2column2value]]
 	 * @throws SQLException
 	 */
-	public static List toListOfMap(ResultSet resultSet) throws SQLException {
-		List result = new ArrayList<Map>();
+	public static List<Map<Object, Object>> toListOfMap(ResultSet resultSet)
+			throws SQLException {
+		List<Map<Object, Object>> result = new ArrayList<Map<Object, Object>>();
 		ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 		int columnsNumber = resultSetMetaData.getColumnCount();
 
@@ -96,6 +97,22 @@ public class BonitaDBTools {
 	}
 
 	/**
+	 * Convert a query result into a map
+	 * 
+	 * @param resultSet
+	 * @return A map. A row will be binded to the map. Ex: [column1name
+	 *         :row1column1value,column2name:row1column2value]
+	 * @throws SQLException
+	 */
+	public static Map<Object, Object> toMap(ResultSet resultSet)
+			throws SQLException {
+		List<Map<Object, Object>> list = toListOfMap(resultSet);
+		if (list != null && list.size() > 0)
+			return list.get(0);
+		return null;
+	}
+
+	/**
 	 * Get a table into a list of list format
 	 * 
 	 * @param resultSet
@@ -104,13 +121,14 @@ public class BonitaDBTools {
 	 *         ,row1column2value],[row2column1value,row2column2value]]
 	 * @throws SQLException
 	 */
-	public static List toListOfList(ResultSet resultSet) throws SQLException {
-		List result = new ArrayList<Map>();
+	public static List<List<Object>> toListOfList(ResultSet resultSet)
+			throws SQLException {
+		List<List<Object>> result = new ArrayList<List<Object>>();
 		ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
 		int columnsNumber = resultSetMetaData.getColumnCount();
 
 		while (resultSet.next()) {
-			List list = new ArrayList<Object>();
+			List<Object> list = new ArrayList<Object>();
 			if (columnsNumber > 0) {
 				for (int i = 0; i < columnsNumber; i++) {
 					list.add(resultSet.getObject(i + 1));

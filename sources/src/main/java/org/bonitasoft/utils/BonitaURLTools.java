@@ -18,78 +18,14 @@ public class BonitaURLTools {
 		app, form;
 	}
 
-	public static String APPLICATION_URL = "/bonita/console/homepage";
+	public static String APPLICATION_URL = "/bonita";
 
 	/**
-	 * @param protocol
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
-	 * @param activityInstanceId
-	 * @param formMode
-	 *            app or form
-	 * @param apiAccessor
-	 *            APIAccessor used to get details of task
-	 * @return URL to access to a human task form
-	 * @throws ProcessDefinitionNotFoundException
-	 * @throws ActivityInstanceNotFoundException
-	 */
-	@Deprecated
-	public static String getHumanTaskURL(String protocol, String host,
-			long port, long activityInstanceId, FormMode formMode,
-			APIAccessor apiAccessor) throws ActivityInstanceNotFoundException,
-			ProcessDefinitionNotFoundException {
-		return getHumanTaskURL(protocol, host, port, activityInstanceId,
-				formMode, apiAccessor.getProcessAPI());
-	}
-
-	/**
-	 * @param protocol
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
-	 * @param formName
-	 *            a task form name is generated as
-	 *            PROCESS_NAME--PROCESS_VERSION-TASK_NAME. Ex: Pool1--1.0--Step1
-	 * @param activityInstanceId
-	 * @param formMode
-	 *            app or form
-	 * @param processAPI
-	 * @return URL to access to a human task form
-	 * @throws ProcessDefinitionNotFoundException
-	 * @throws ActivityInstanceNotFoundException
-	 */
-	@Deprecated
-	public static String getHumanTaskURL(String protocol, String host,
-			long port, long activityInstanceId, FormMode formMode,
-			ProcessAPI processAPI) throws ActivityInstanceNotFoundException,
-			ProcessDefinitionNotFoundException {
-		StringBuffer buffer = new StringBuffer("");
-		buffer.append(protocol);
-		buffer.append("://");
-		buffer.append(host);
-		buffer.append(":");
-		buffer.append(port);
-		buffer.append(APPLICATION_URL);
-		buffer.append("?ui=form#form=");
-		buffer.append(getHumanTaskFormName(activityInstanceId, processAPI));
-		buffer.append("$entry&mode=");
-		buffer.append(formMode.toString());
-		buffer.append("&task=");
-		buffer.append(activityInstanceId);
-
-		return buffer.toString();
-	}
-
-	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 * @param serverURL
+	 *            Bonita server host URL
 	 * 
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param activityInstanceId
 	 * @param formMode
 	 *            app or form
@@ -99,11 +35,11 @@ public class BonitaURLTools {
 	 * @throws ActivityInstanceNotFoundException
 	 */
 
-	public static String getHumanTaskURL(String server,
+	private static String getHumanTaskURL(String serverURL,
 			long activityInstanceId, FormMode formMode, ProcessAPI processAPI)
 			throws ActivityInstanceNotFoundException,
 			ProcessDefinitionNotFoundException {
-		StringBuffer buffer = new StringBuffer(server);
+		StringBuffer buffer = new StringBuffer(serverURL);
 		buffer.append(APPLICATION_URL);
 		buffer.append("?ui=form#form=");
 		buffer.append(getHumanTaskFormName(activityInstanceId, processAPI));
@@ -117,9 +53,11 @@ public class BonitaURLTools {
 	}
 
 	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 * @param serverURL
+	 *            Bonita server host URL
+	 * 
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param activityInstanceId
 	 * 
 	 * @param apiAccessor
@@ -128,45 +66,20 @@ public class BonitaURLTools {
 	 * @throws ProcessDefinitionNotFoundException
 	 * @throws ActivityInstanceNotFoundException
 	 */
-	public static String getHumanTaskURL(String server,
+	public static String getHumanTaskURL(String serverURL,
 			long activityInstanceId, APIAccessor apiAccessor)
 			throws ActivityInstanceNotFoundException,
 			ProcessDefinitionNotFoundException {
-		return getHumanTaskURL(server, activityInstanceId, FormMode.app,
+		return getHumanTaskURL(serverURL, activityInstanceId, FormMode.app,
 				apiAccessor.getProcessAPI());
 	}
 
 	/**
-	 * @param protocol
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
-	 * @param processDefinitionId
-	 * @param formMode
-	 *            app or form
-	 * @param apiAccessor
-	 *            APIAccessor used to get details of process
-	 * @return URL to access to a process initialization form
-	 * @throws ProcessDefinitionNotFoundException
-	 */
-	@Deprecated
-	public static String getProcessURL(String protocol, String host, long port,
-			long processDefinitionId, FormMode formMode, APIAccessor apiAccessor)
-			throws ProcessDefinitionNotFoundException {
-		return getProcessURL(protocol, host, port, processDefinitionId,
-				formMode, apiAccessor.getProcessAPI());
-	}
-
-	/**
-	 * @param protocol
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
+	 * @param serverURL
+	 *            Bonita server host URL
 	 * 
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param processDefinitionId
 	 * @param formMode
 	 *            app or form
@@ -174,16 +87,10 @@ public class BonitaURLTools {
 	 * @return URL to access to a process initialization form
 	 * @throws ProcessDefinitionNotFoundException
 	 */
-	@Deprecated
-	public static String getProcessURL(String protocol, String host, long port,
+	private static String getStartProcessCaseURL(String serverURL,
 			long processDefinitionId, FormMode formMode, ProcessAPI processAPI)
 			throws ProcessDefinitionNotFoundException {
-		StringBuffer buffer = new StringBuffer("");
-		buffer.append(protocol);
-		buffer.append("://");
-		buffer.append(host);
-		buffer.append(":");
-		buffer.append(port);
+		StringBuffer buffer = new StringBuffer(serverURL);
 		buffer.append(APPLICATION_URL);
 		buffer.append("?ui=form&form=");
 		buffer.append(getProcessFormName(processDefinitionId, processAPI));
@@ -195,116 +102,30 @@ public class BonitaURLTools {
 	}
 
 	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 * @param serverURL
+	 *            Bonita server host URL
 	 * 
-	 * @param processDefinitionId
-	 * @param formMode
-	 *            app or form
-	 * @param processAPI
-	 * @return URL to access to a process initialization form
-	 * @throws ProcessDefinitionNotFoundException
-	 */
-	public static String getProcessURL(String server, long processDefinitionId,
-			FormMode formMode, ProcessAPI processAPI)
-			throws ProcessDefinitionNotFoundException {
-		StringBuffer buffer = new StringBuffer(server);
-		buffer.append(APPLICATION_URL);
-		buffer.append("?ui=form&form=");
-		buffer.append(getProcessFormName(processDefinitionId, processAPI));
-		buffer.append("$entry&mode=");
-		buffer.append(formMode.toString());
-		buffer.append("&process=");
-		buffer.append(processDefinitionId);
-		return buffer.toString();
-	}
-
-	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param processDefinitionId
 	 * @param apiAccessor
 	 *            APIAccessor used to get details of process
 	 * @return URL to access to a process initialization form in APP mode
 	 * @throws ProcessDefinitionNotFoundException
 	 */
-	public static String getProcessURL(String server, long processDefinitionId,
-			FormMode formMode, APIAccessor apiAccessor)
+	public static String getStartProcessCaseURL(String serverURL,
+			long processDefinitionId, APIAccessor apiAccessor)
 			throws ProcessDefinitionNotFoundException {
-		return getProcessURL(server, processDefinitionId, FormMode.app,
-				apiAccessor.getProcessAPI());
+		return getStartProcessCaseURL(serverURL, processDefinitionId,
+				FormMode.app, apiAccessor.getProcessAPI());
 	}
 
 	/**
-	 * @param protocole
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
-	 * @param processDefinitionId
-	 * @param formMode
-	 *            app or form
-	 * @param apiAccessor
-	 *            APIAccessor used to get details of process
-	 * @return URL to access to a process initialization form in autologin mode
-	 * @throws ProcessDefinitionNotFoundException
-	 */
-	@Deprecated
-	public static String getProcessURLWithAutologin(String protocol,
-			String host, long port, long processDefinitionId,
-			FormMode formMode, APIAccessor apiAccessor)
-			throws ProcessDefinitionNotFoundException {
-
-		return getProcessURLWithAutologin(protocol, host, port,
-				processDefinitionId, formMode, apiAccessor.getProcessAPI());
-	}
-
-	/**
-	 * @param protocol
-	 *            Enter http, https, ...
-	 * @param host
-	 *            Enter your hostname
-	 * @param port
-	 *            Enter your port number
-	 * @param processDefinitionId
-	 * @param formMode
-	 *            app or form
-	 * @param processAPI
+	 * @param serverURL
+	 *            Bonita server host URL
 	 * 
-	 * @return URL to access to a process initialization form in autologin mode
-	 * @throws ProcessDefinitionNotFoundException
-	 */
-	@Deprecated
-	public static String getProcessURLWithAutologin(String protocol,
-			String host, long port, long processDefinitionId,
-			FormMode formMode, ProcessAPI processAPI)
-			throws ProcessDefinitionNotFoundException {
-		String formName = getProcessFormName(processDefinitionId, processAPI);
-		StringBuffer buffer = new StringBuffer("");
-		buffer.append(protocol);
-		buffer.append("://");
-		buffer.append(host);
-		buffer.append(":");
-		buffer.append(port);
-		buffer.append(APPLICATION_URL);
-		buffer.append("?ui=form&autologin=");
-		buffer.append(formName);
-		buffer.append("#form=");
-		buffer.append(formName);
-		buffer.append("$entry&mode=");
-		buffer.append(formMode.toString());
-		buffer.append("&process=");
-		buffer.append(processDefinitionId);
-		return buffer.toString();
-	}
-
-	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param processDefinitionId
 	 * 
 	 * @param apiAccessor
@@ -313,18 +134,20 @@ public class BonitaURLTools {
 	 *         APP mode
 	 * @throws ProcessDefinitionNotFoundException
 	 */
-	public static String getProcessURLWithAutologin(String server,
+	public static String getStartProcessCaseURLWithAutologin(String serverURL,
 			long processDefinitionId, APIAccessor apiAccessor)
 			throws ProcessDefinitionNotFoundException {
 
-		return getProcessURLWithAutologin(server, processDefinitionId,
-				FormMode.app, apiAccessor.getProcessAPI());
+		return getStartProcessCaseURLWithAutologin(serverURL,
+				processDefinitionId, FormMode.app, apiAccessor.getProcessAPI());
 	}
 
 	/**
-	 * @param server
-	 *            Enter http://localhost:8080 or http://localhost or
-	 *            https://localhost:8081
+	 * @param serverURL
+	 *            Bonita server host URL
+	 * 
+	 *            Examples: http://localhost:8080 or http://localhost or
+	 *            https://localhost:8081 *
 	 * @param processDefinitionId
 	 * @param formMode
 	 *            app or form
@@ -333,11 +156,11 @@ public class BonitaURLTools {
 	 * @return URL to access to a process initialization form in autologin mode
 	 * @throws ProcessDefinitionNotFoundException
 	 */
-	public static String getProcessURLWithAutologin(String server,
+	private static String getStartProcessCaseURLWithAutologin(String serverURL,
 			long processDefinitionId, FormMode formMode, ProcessAPI processAPI)
 			throws ProcessDefinitionNotFoundException {
 		String formName = getProcessFormName(processDefinitionId, processAPI);
-		StringBuffer buffer = new StringBuffer(server);
+		StringBuffer buffer = new StringBuffer(serverURL);
 		buffer.append(APPLICATION_URL);
 		buffer.append("?ui=form&autologin=");
 		buffer.append(formName);
